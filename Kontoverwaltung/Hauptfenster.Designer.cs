@@ -37,6 +37,7 @@
             btnLogin = new Button();
             btnRegister = new Button();
             btnExit = new Button();
+            meldungen = new Label();
             SuspendLayout();
             // 
             // header
@@ -120,11 +121,20 @@
             btnExit.UseVisualStyleBackColor = true;
             btnExit.Click += btnExit_Click;
             // 
+            // meldungen
+            // 
+            meldungen.AutoSize = true;
+            meldungen.Location = new Point(12, 276);
+            meldungen.Name = "meldungen";
+            meldungen.Size = new Size(0, 15);
+            meldungen.TabIndex = 9;
+            // 
             // Hauptfenster
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(500, 300);
+            Controls.Add(meldungen);
             Controls.Add(btnExit);
             Controls.Add(btnRegister);
             Controls.Add(btnLogin);
@@ -153,5 +163,6 @@
         private Button btnLogin;
         private Button btnRegister;
         private Button btnExit;
+        private Label meldungen;
     }
 }

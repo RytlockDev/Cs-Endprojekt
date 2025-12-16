@@ -19,6 +19,11 @@ namespace Kontoverwaltung
             _Hauptfenster = mainWin;
         }
 
+        private void Register_Load(object sender, EventArgs e)
+        {
+            Location = new Point(_Hauptfenster.Location.X, _Hauptfenster.Location.Y);
+        }
+
         private void Register_FormClosing(object sender, FormClosingEventArgs e)
         {
             _Hauptfenster.Show();

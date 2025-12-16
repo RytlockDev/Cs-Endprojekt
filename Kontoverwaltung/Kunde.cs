@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kontoverwaltung
 {
-    internal class Kunde
+    public class Kunde
     {
         public string Name { get; set; }
         public string LoginName { get; set; }

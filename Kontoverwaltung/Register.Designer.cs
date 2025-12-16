@@ -155,6 +155,7 @@
             Name = "Register";
             Text = "Register";
             FormClosing += Register_FormClosing;
+            Load += Register_Load;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -4,7 +4,10 @@ using System.Text;
 
 namespace Kontoverwaltung
 {
-    internal class Konto
+    public class Konto
     {
+        public string Inhaber {  get; set; }
+        public string IBAN { get; set; }
+        public decimal Saldo { get; set; }
     }
 }
