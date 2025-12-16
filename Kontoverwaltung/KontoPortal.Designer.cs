@@ -35,7 +35,14 @@
             kontoDauerauftrag = new TabPage();
             header = new Label();
             btnLogout = new Button();
+            Kontouebersicht = new ListBox();
+            btnKontoCreate = new Button();
+            this.btnKontoDelete = new Button();
+            this.btnKontoSelect = new Button();
+            Transaktionsliste = new ListBox();
             kundenPortal.SuspendLayout();
+            kontoDetails.SuspendLayout();
+            kontoAuszug.SuspendLayout();
             SuspendLayout();
             // 
             // kundenPortal
@@ -52,6 +59,10 @@
             // 
             // kontoDetails
             // 
+            kontoDetails.Controls.Add(btnKontoSelect);
+            kontoDetails.Controls.Add(btnKontoDelete);
+            kontoDetails.Controls.Add(btnKontoCreate);
+            kontoDetails.Controls.Add(Kontouebersicht);
             kontoDetails.Location = new Point(4, 24);
             kontoDetails.Name = "kontoDetails";
             kontoDetails.Padding = new Padding(3);
@@ -62,6 +73,7 @@
             // 
             // kontoAuszug
             // 
+            kontoAuszug.Controls.Add(Transaktionsliste);
             kontoAuszug.Location = new Point(4, 24);
             kontoAuszug.Name = "kontoAuszug";
             kontoAuszug.Padding = new Padding(3);
@@ -109,6 +121,49 @@
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += btnLogout_Click;
             // 
+            // Kontouebersicht
+            // 
+            Kontouebersicht.FormattingEnabled = true;
+            Kontouebersicht.Location = new Point(8, 6);
+            Kontouebersicht.Name = "Kontouebersicht";
+            Kontouebersicht.Size = new Size(776, 184);
+            Kontouebersicht.TabIndex = 0;
+            // 
+            // btnKontoCreate
+            // 
+            btnKontoCreate.Location = new Point(8, 196);
+            btnKontoCreate.Name = "btnKontoCreate";
+            btnKontoCreate.Size = new Size(123, 23);
+            btnKontoCreate.TabIndex = 1;
+            btnKontoCreate.Text = "Konto Erstellen";
+            btnKontoCreate.UseVisualStyleBackColor = true;
+            // 
+            // btnKontoDelete
+            // 
+            btnKontoDelete.Location = new Point(137, 196);
+            btnKontoDelete.Name = "btnKontoDelete";
+            btnKontoDelete.Size = new Size(123, 23);
+            btnKontoDelete.TabIndex = 2;
+            btnKontoDelete.Text = "Konto Loeschen";
+            btnKontoDelete.UseVisualStyleBackColor = true;
+            // 
+            // btnKontoSelect
+            // 
+            btnKontoSelect.Location = new Point(266, 196);
+            btnKontoSelect.Name = "btnKontoSelect";
+            btnKontoSelect.Size = new Size(123, 23);
+            btnKontoSelect.TabIndex = 3;
+            btnKontoSelect.Text = "Konto Auswahlen";
+            btnKontoSelect.UseVisualStyleBackColor = true;
+            // 
+            // Transaktionsliste
+            // 
+            Transaktionsliste.FormattingEnabled = true;
+            Transaktionsliste.Location = new Point(8, 6);
+            Transaktionsliste.Name = "Transaktionsliste";
+            Transaktionsliste.Size = new Size(776, 184);
+            Transaktionsliste.TabIndex = 0;
+            // 
             // KontoPortal
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -119,8 +174,11 @@
             Controls.Add(kundenPortal);
             Name = "KontoPortal";
             Text = "Kontoverwaltung";
+            FormClosing += KontoPortal_FormClosing;
             Load += KontoPortal_Load;
             kundenPortal.ResumeLayout(false);
+            kontoDetails.ResumeLayout(false);
+            kontoAuszug.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -134,5 +192,10 @@
         private TabPage kontoDetails;
         private Label header;
         private Button btnLogout;
+        private Button btnKontoSelect;
+        private Button btnKontoDelete;
+        private Button btnKontoCreate;
+        private ListBox Kontouebersicht;
+        private ListBox Transaktionsliste;
     }
 }

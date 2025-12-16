@@ -22,11 +22,19 @@ namespace Kontoverwaltung
         private void KontoPortal_Load(object sender, EventArgs e)
         {
             Location = new Point(_Hauptfenster.Location.X, _Hauptfenster.Location.Y);
+            header.Text += $" {_KundeAngemeldet.Name}";
+        }
+        
+        private void KontoPortal_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-
+            this.Close();
         }
+
+        
     }
 }
