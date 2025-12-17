@@ -46,7 +46,7 @@ namespace Kontoverwaltung
             registerMeldungen.Text = "Konto erfolgreich Angelegt";
             registerMeldungen.Refresh();
 
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             this.Close();
         }
 
