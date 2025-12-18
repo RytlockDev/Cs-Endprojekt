@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kontoverwaltung
 {
-    internal class Transaktion
+    public class Transaktion : IReaddableCSV
     {
         public string Auftraggeber { get; set; } = string.Empty;
         public string Empfaenger { get; set; } = string.Empty;
@@ -14,5 +14,14 @@ namespace Kontoverwaltung
         public decimal Betrag { get; set; }
         public DateOnly Ausfuehrungsdatum { get; set; }
         public bool Dauerauftrag { get; set; }
+
+        public override string ToString()
+        {
+            return $"Auftraggeber: {Auftraggeber}       Datum: {Ausfuehrungsdatum}      Verwendungszweck: {Verwendungszweck}            Betrag: {Betrag.ToString()} €";
+        }
+
+        public string ToCSV() {
+            return $"{Auftraggeber};{Empfaenger};{AuftraggeberIBAN};{AuftraggeberIBAN};{Verwendungszweck};{Betrag};{Ausfuehrungsdatum};{Dauerauftrag}";
+        }
     }
 }

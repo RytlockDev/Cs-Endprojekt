@@ -76,7 +76,7 @@ namespace Kontoverwaltung
 
         private bool LoginNameExsist(string name)
         {
-            foreach (var kunde in Kundenverwaltung.Kunden)
+            foreach (var kunde in Kundenverwaltung.kunden)
             {
                 if (kunde.LoginName == name) { return true; }
             }

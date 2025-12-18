@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kontoverwaltung
 {
-    internal class Sparkonto : Konto
+    public class Sparkonto : Konto
     {
         private decimal zinssatz;
 
@@ -18,6 +18,11 @@ namespace Kontoverwaltung
         public override string ToString()
         {
             return "Sparkonto   " + base.ToString();
+        }
+
+        public override string ToCSV()
+        {
+            return $"S;" + base.ToCSV() + $";{Zinssatz}";
         }
     }
 }

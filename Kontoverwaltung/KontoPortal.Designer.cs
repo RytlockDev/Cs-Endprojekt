@@ -30,6 +30,10 @@
         {
             kundenPortal = new TabControl();
             kontoDetails = new TabPage();
+            tbBetragEinzahlenAuszahlen = new TextBox();
+            lbBetragEinzahlenAuszahlen = new Label();
+            btnAuszahlen = new Button();
+            btnEinzahlen = new Button();
             btnKontoSelect = new Button();
             btnKontoDelete = new Button();
             btnKontoCreate = new Button();
@@ -77,6 +81,10 @@
             // 
             // kontoDetails
             // 
+            kontoDetails.Controls.Add(tbBetragEinzahlenAuszahlen);
+            kontoDetails.Controls.Add(lbBetragEinzahlenAuszahlen);
+            kontoDetails.Controls.Add(btnAuszahlen);
+            kontoDetails.Controls.Add(btnEinzahlen);
             kontoDetails.Controls.Add(btnKontoSelect);
             kontoDetails.Controls.Add(btnKontoDelete);
             kontoDetails.Controls.Add(btnKontoCreate);
@@ -88,6 +96,42 @@
             kontoDetails.TabIndex = 0;
             kontoDetails.Text = "Konto Details";
             kontoDetails.UseVisualStyleBackColor = true;
+            // 
+            // tbBetragEinzahlenAuszahlen
+            // 
+            tbBetragEinzahlenAuszahlen.Location = new Point(137, 194);
+            tbBetragEinzahlenAuszahlen.Name = "tbBetragEinzahlenAuszahlen";
+            tbBetragEinzahlenAuszahlen.Size = new Size(123, 23);
+            tbBetragEinzahlenAuszahlen.TabIndex = 7;
+            // 
+            // lbBetragEinzahlenAuszahlen
+            // 
+            lbBetragEinzahlenAuszahlen.AutoSize = true;
+            lbBetragEinzahlenAuszahlen.Location = new Point(84, 202);
+            lbBetragEinzahlenAuszahlen.Name = "lbBetragEinzahlenAuszahlen";
+            lbBetragEinzahlenAuszahlen.Size = new Size(47, 15);
+            lbBetragEinzahlenAuszahlen.TabIndex = 6;
+            lbBetragEinzahlenAuszahlen.Text = "Betrag: ";
+            // 
+            // btnAuszahlen
+            // 
+            btnAuszahlen.Location = new Point(137, 223);
+            btnAuszahlen.Name = "btnAuszahlen";
+            btnAuszahlen.Size = new Size(123, 23);
+            btnAuszahlen.TabIndex = 5;
+            btnAuszahlen.Text = "Auszahlen";
+            btnAuszahlen.UseVisualStyleBackColor = true;
+            btnAuszahlen.Click += btnAuszahlen_Click;
+            // 
+            // btnEinzahlen
+            // 
+            btnEinzahlen.Location = new Point(8, 223);
+            btnEinzahlen.Name = "btnEinzahlen";
+            btnEinzahlen.Size = new Size(123, 23);
+            btnEinzahlen.TabIndex = 4;
+            btnEinzahlen.Text = "Einzahlen";
+            btnEinzahlen.UseVisualStyleBackColor = true;
+            btnEinzahlen.Click += btnEinzahlen_Click;
             // 
             // btnKontoSelect
             // 
@@ -134,7 +178,7 @@
             kontoAuszug.Location = new Point(4, 24);
             kontoAuszug.Name = "kontoAuszug";
             kontoAuszug.Padding = new Padding(3);
-            kontoAuszug.Size = new Size(792, 382);
+            kontoAuszug.Size = new Size(792, 393);
             kontoAuszug.TabIndex = 1;
             kontoAuszug.Text = "Konto Auszug";
             kontoAuszug.UseVisualStyleBackColor = true;
@@ -174,7 +218,7 @@
             kontoUeberweisung.Location = new Point(4, 24);
             kontoUeberweisung.Name = "kontoUeberweisung";
             kontoUeberweisung.Padding = new Padding(3);
-            kontoUeberweisung.Size = new Size(792, 382);
+            kontoUeberweisung.Size = new Size(792, 393);
             kontoUeberweisung.TabIndex = 2;
             kontoUeberweisung.Text = "Ueberweisung";
             kontoUeberweisung.UseVisualStyleBackColor = true;
@@ -199,6 +243,7 @@
             tbIBAN.Name = "tbIBAN";
             tbIBAN.Size = new Size(200, 23);
             tbIBAN.TabIndex = 9;
+            tbIBAN.TextChanged += tbIBAN_TextChanged;
             // 
             // btnUeberweisen
             // 
@@ -221,6 +266,8 @@
             // 
             // dtpAusfuehrungsdatum
             // 
+            dtpAusfuehrungsdatum.CustomFormat = "dd. MM. yyyy";
+            dtpAusfuehrungsdatum.Format = DateTimePickerFormat.Custom;
             dtpAusfuehrungsdatum.Location = new Point(236, 225);
             dtpAusfuehrungsdatum.Name = "dtpAusfuehrungsdatum";
             dtpAusfuehrungsdatum.Size = new Size(200, 23);
@@ -268,9 +315,8 @@
             ueberweisungEmpfeangerName.AutoSize = true;
             ueberweisungEmpfeangerName.Location = new Point(236, 15);
             ueberweisungEmpfeangerName.Name = "ueberweisungEmpfeangerName";
-            ueberweisungEmpfeangerName.Size = new Size(38, 15);
+            ueberweisungEmpfeangerName.Size = new Size(0, 15);
             ueberweisungEmpfeangerName.TabIndex = 1;
-            ueberweisungEmpfeangerName.Text = "label1";
             // 
             // ueberweisungEmpfeanger
             // 
@@ -288,7 +334,7 @@
             kontoDauerauftrag.Location = new Point(4, 24);
             kontoDauerauftrag.Name = "kontoDauerauftrag";
             kontoDauerauftrag.Padding = new Padding(3);
-            kontoDauerauftrag.Size = new Size(792, 382);
+            kontoDauerauftrag.Size = new Size(792, 393);
             kontoDauerauftrag.TabIndex = 3;
             kontoDauerauftrag.Text = "Dauerauftreage";
             kontoDauerauftrag.UseVisualStyleBackColor = true;
@@ -353,6 +399,7 @@
             Load += KontoPortal_Load;
             kundenPortal.ResumeLayout(false);
             kontoDetails.ResumeLayout(false);
+            kontoDetails.PerformLayout();
             kontoAuszug.ResumeLayout(false);
             kontoUeberweisung.ResumeLayout(false);
             kontoUeberweisung.PerformLayout();
@@ -391,5 +438,9 @@
         private Button btnDauerauftragLoeschen;
         private ListBox Dauerauftreage;
         private Label verwaltungMeldungen;
+        private Button btnAuszahlen;
+        private Button btnEinzahlen;
+        private TextBox tbBetragEinzahlenAuszahlen;
+        private Label lbBetragEinzahlenAuszahlen;
     }
 }

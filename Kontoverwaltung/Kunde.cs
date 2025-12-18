@@ -4,13 +4,17 @@ using System.Text;
 
 namespace Kontoverwaltung
 {
-    public class Kunde
+    public class Kunde : IReaddableCSV
     {
         public string Name { get; set; }
         public string LoginName { get; set; }
         public string Password { get; set; }
-        public List<Konto> konten = new List<Konto>();
 
         public override string ToString() => $"Name: {Name}";
+
+        public string ToCSV()
+        {
+            return $"{Name};{LoginName};{Password}";
+        }
     }
 }

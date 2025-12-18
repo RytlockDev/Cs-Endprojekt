@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Kontoverwaltung
 {
-    internal class Girokonto : Konto
+    public class Girokonto : Konto
     {
         private decimal dispo;
 
@@ -18,6 +18,17 @@ namespace Kontoverwaltung
         public override string ToString()
         {
             return "Girokonto   " + base.ToString();
+        }
+
+        public override void Auszahlen(decimal betrag)
+        {
+            if (this.Dispo + base.Saldo < betrag) throw new ArgumentException("Nicht genug Saldo vorhanden");
+            base.Saldo -= betrag;
+        }
+
+        public override string ToCSV()
+        {
+            return $"G;" + base.ToCSV() + $";{Dispo}";
         }
     }
 }
