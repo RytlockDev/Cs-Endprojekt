@@ -10,15 +10,18 @@ namespace Kontoverwaltung
 {
     public partial class CreateKonto : Form
     {
+        private Hauptfenster _Hauptfenster;
         private Kunde _Kunde;
-        public CreateKonto(Kunde kunde)
-        {
+        public CreateKonto(Hauptfenster hf, Kunde kunde)
+        {        
             InitializeComponent();
+            _Hauptfenster = hf;
             _Kunde = kunde;
         }
 
         private void CreateKonto_Load(object sender, EventArgs e)
         {
+            Location = new Point(_Hauptfenster.Location.X, _Hauptfenster.Location.Y);
             lbInhaber.Text = _Kunde.Name;
         }
 
@@ -33,16 +36,12 @@ namespace Kontoverwaltung
             {
                 string iban;
                 if (tfBAN.Text.Length < 8) throw new ArgumentException("IBAN muss 8 Zeichen Beinhalten");
-                iban = ibanVorkennung + tfBAN.Text;
+                iban = (ibanVorkennung.Text.Trim() + tfBAN.Text.Trim()).Trim();
+                // Schaut ob Ausgewahlt ist was fuer ein Kontotyp es ist und erstellt dann entsprechend
                 if (!cbGiro.Checked && !cbSparkonto.Checked) throw new ArgumentException("Bitte eine Kontoart Weahlen");
-                if (cbGiro.Checked)
-                {
-                    Kontoverwaltung.GirokontoAnlegen(_Kunde, iban);
-                }
-                else if (cbSparkonto.Checked)
-                {
-                    Kontoverwaltung.SparkontoAnlegen(_Kunde, iban);
-                }
+
+                if (cbGiro.Checked) {Kontoverwaltung.GirokontoAnlegen(_Kunde, iban);}
+                if (cbSparkonto.Checked) {Kontoverwaltung.SparkontoAnlegen(_Kunde, iban);}
 
                 meldungen.ForeColor = Color.Green;
                 meldungen.Text = "Konto erfolgreich erstellt";

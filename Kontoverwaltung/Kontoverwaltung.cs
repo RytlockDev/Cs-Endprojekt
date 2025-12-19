@@ -25,7 +25,7 @@ namespace Kontoverwaltung
             konten.Remove(konto);
         }
 
-        private  static Konto SucheKonto(string iban)
+        private  static Konto? SucheKonto(string iban)
         {
             foreach (Konto konto in konten) {
                 if(konto.IBAN.Equals(iban)) return konto;
@@ -33,10 +33,10 @@ namespace Kontoverwaltung
             return null;
         }
 
-        public static void Ueberweisen(decimal betrag,string ursprungskonto, string empfeangerIban)
+        public static void Ueberweisen(decimal betrag, string ursprungsIban, string empfeangerIban)
         {
-            var zielkonto = SucheKonto(empfeangerIban);
-            var ursprung = SucheKonto(ursprungskonto);
+            Konto zielkonto = SucheKonto(empfeangerIban);
+            Konto ursprung = SucheKonto(ursprungsIban);
             zielkonto.Einzahlen(betrag);
             ursprung.Auszahlen(betrag);
         }
@@ -55,7 +55,7 @@ namespace Kontoverwaltung
                 Auftraggeber = ursprungName,
                 AuftraggeberIBAN = ursprungIban,
                 Empfaenger = ziel,
-                EmpfaengerIBAN = ursprungIban,
+                EmpfaengerIBAN = zielIban,
                 Verwendungszweck = zweck,
                 Betrag = betrag,
                 Ausfuehrungsdatum = date,

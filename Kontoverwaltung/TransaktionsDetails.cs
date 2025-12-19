@@ -10,15 +10,18 @@ namespace Kontoverwaltung
 {
     public partial class TransaktionsDetails : Form
     {
+        private Hauptfenster _Hauptfenster;
         private Transaktion _Transaktion;
-        public TransaktionsDetails(Transaktion t)
+        public TransaktionsDetails(Hauptfenster hf, Transaktion t)
         {
             InitializeComponent();
+            _Hauptfenster = hf;
             _Transaktion = t;
         }
 
         private void TransaktionsDetails_Load(object sender, EventArgs e)
         {
+            Location = new Point(_Hauptfenster.Location.X, _Hauptfenster.Location.Y);
             LadeDetails();
         }
 

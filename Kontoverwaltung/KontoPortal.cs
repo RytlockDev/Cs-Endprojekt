@@ -18,38 +18,37 @@ namespace Kontoverwaltung
         public KontoPortal(Hauptfenster mainWin, Kunde benutzer)
         {
             InitializeComponent();
+            // Variable von der instanz des Hauptfensters
             _Hauptfenster = mainWin;
             _KundeAngemeldet = benutzer;
         }
 
         private void KontoPortal_Load(object sender, EventArgs e)
         {
-            Datei_IO.ErzeugeKunden(Config.DATEIPFAD_KUNDEN);
-            Datei_IO.ErzeugeKonten(Config.DATEIPFAD_KONTEN);
-            Datei_IO.ErzeugeTransaktionen(Config.DATEIPFAD_TRANSAKTIONEN);
+            // Setzt das Fenster an die Gleiche stelle wie das Hauptfenster
             Location = new Point(_Hauptfenster.Location.X, _Hauptfenster.Location.Y);
             header.Text += $" {_KundeAngemeldet.Name}";
+            // Lead alle Konten zum Aktuellen Benutzer
             LadeKonten();
             btnEinzahlen.Enabled = false;
             btnAuszahlen.Enabled = false;
         }
 
-        private void KontoPortal_FormClosing(object sender, FormClosingEventArgs e)
+        private void KontoPortal_FormClosing(object sender, FormClosingEventArgs e) {}
+
+        // Schreibt vor dem Beenden alle Daten in 3 CSV Dateien
+        private void btnLogout_Click(object sender, EventArgs e)
         {
             Datei_IO.SchreibeDaten(Config.DATEIPFAD_KUNDEN, Kundenverwaltung.kunden);
             Datei_IO.SchreibeDaten(Config.DATEIPFAD_KONTEN, Kontoverwaltung.konten);
             Datei_IO.SchreibeDaten(Config.DATEIPFAD_TRANSAKTIONEN, Kontoverwaltung.transaktionen);
-
-        }
-
-        private void btnLogout_Click(object sender, EventArgs e)
-        {
             this.Close();
+            _Hauptfenster.Show();
         }
 
         private void btnKontoCreate_Click(object sender, EventArgs e)
         {
-            CreateKonto konto = new CreateKonto(_KundeAngemeldet);
+            CreateKonto konto = new CreateKonto(_Hauptfenster, _KundeAngemeldet);
             konto.ShowDialog();
             LadeKonten();
         }
@@ -77,7 +76,7 @@ namespace Kontoverwaltung
             try
             {
                 if (Kontouebersicht.SelectedItem == null) throw new ArgumentException("Bitte Konto Auswahlen");
-                else _Ausgeweahlt = (Konto)Kontouebersicht.SelectedItem;
+                else _Ausgeweahlt = (Konto) Kontouebersicht.SelectedItem;
                 LadeAuszug();
                 LadeDauerauftreage();
                 btnEinzahlen.Enabled = true;
@@ -95,9 +94,9 @@ namespace Kontoverwaltung
         {          
             decimal betrag = decimal.Parse(tbBetragEinzahlenAuszahlen.Text);
             _Ausgeweahlt.Einzahlen(betrag);
-            Kontoverwaltung.TransaktionAnlegen(_Ausgeweahlt.Inhaber.LoginName.ToString(),
+            Kontoverwaltung.TransaktionAnlegen(_Ausgeweahlt.Inhaber.Name,
                                                    _Ausgeweahlt.IBAN,
-                                                   _Ausgeweahlt.Inhaber.LoginName.ToString(),
+                                                   _Ausgeweahlt.Inhaber.Name,
                                                    _Ausgeweahlt.IBAN,
                                                    "Einzahlung",
                                                    betrag,
@@ -115,9 +114,9 @@ namespace Kontoverwaltung
             {
                 decimal betrag = decimal.Parse(tbBetragEinzahlenAuszahlen.Text);
                 _Ausgeweahlt.Auszahlen(betrag);
-                Kontoverwaltung.TransaktionAnlegen(_Ausgeweahlt.Inhaber.ToString(),
+                Kontoverwaltung.TransaktionAnlegen(_Ausgeweahlt.Inhaber.Name,
                                                    _Ausgeweahlt.IBAN,
-                                                   _Ausgeweahlt.Inhaber.ToString(),
+                                                   _Ausgeweahlt.Inhaber.Name,
                                                    _Ausgeweahlt.IBAN,
                                                    "Auszahlung",
                                                    -betrag,
@@ -141,7 +140,7 @@ namespace Kontoverwaltung
             {
                 if (Transaktionsliste.SelectedItem == null) throw new ArgumentException("Bitte Transaktion Auswahlen");
                 else _Transaktion = (Transaktion)Transaktionsliste.SelectedItem;
-                TransaktionsDetails details = new TransaktionsDetails(_Transaktion);
+                TransaktionsDetails details = new TransaktionsDetails(_Hauptfenster, _Transaktion);
                 details.ShowDialog();
             }
             catch (ArgumentException ae)
@@ -156,10 +155,12 @@ namespace Kontoverwaltung
             try
             {
                 if (decimal.Parse(tbBetrag.Text) < 0) throw new ArgumentException("Betrag muss goesser 0 sein");
+
                 decimal betrag = decimal.Parse(tbBetrag.Text);
-                DateOnly date = DateOnly.Parse(dtpAusfuehrungsdatum.Text);
+                DateOnly date = DateOnly.FromDateTime(dtpAusfuehrungsdatum.Value);
+
                 Kontoverwaltung.Ueberweisen(betrag, _Ausgeweahlt.IBAN, tbIBAN.Text);
-                Kontoverwaltung.TransaktionAnlegen(_Ausgeweahlt.Inhaber.ToString(),
+                Kontoverwaltung.TransaktionAnlegen(_Ausgeweahlt.Inhaber.Name,
                                                    _Ausgeweahlt.IBAN,                                                   
                                                    ueberweisungEmpfeangerName.Text,
                                                    tbIBAN.Text,
@@ -200,14 +201,15 @@ namespace Kontoverwaltung
             verwaltungMeldungen.Text = "Dauerauftrag Geloescht";
         }
 
+        // Schaut nach an welche Iban Ueberwiesen wird und sucht dann automatisch den namen
         private void tbIBAN_TextChanged(object sender, EventArgs e)
         {
             string iban = tbIBAN.Text;
             foreach (var konto in Kontoverwaltung.konten)
             {
-                if (iban.Equals(konto.Inhaber))
+                if (konto.IBAN.Equals(iban))
                 {
-                    ueberweisungEmpfeangerName.Text = konto.Inhaber.ToString();
+                    ueberweisungEmpfeangerName.Text = konto.Inhaber.Name;
                 }
                 else
                 {
@@ -216,6 +218,7 @@ namespace Kontoverwaltung
             }
         }
 
+        // Zeigt alle Konten zum Aktuellen Angemeldeten Benutzer an
         private void LadeKonten()
         {
             Kontouebersicht.Items.Clear();
@@ -223,24 +226,26 @@ namespace Kontoverwaltung
             {
                 if (konten.Inhaber.LoginName.Equals(_KundeAngemeldet.LoginName))
                 {
-                    Kontouebersicht.Items.Add(konten.ToString());
+                    Kontouebersicht.Items.Add(konten);
                 }
             }
         }
 
+        // Zeigt alle Transaktionen zum Aktuellen Angemeldeten Benutzer an
         private void LadeAuszug()
         {
             Transaktionsliste.Items.Clear();
             foreach (var transaktionen in Kontoverwaltung.transaktionen)
             {
-                if (transaktionen.AuftraggeberIBAN.Equals(_Ausgeweahlt.IBAN)
-                || transaktionen.EmpfaengerIBAN.Equals(_Ausgeweahlt.IBAN) && !transaktionen.Dauerauftrag)
+                if (transaktionen.AuftraggeberIBAN.Equals(_Ausgeweahlt.IBAN) 
+                  || transaktionen.EmpfaengerIBAN.Equals(_Ausgeweahlt.IBAN))
                 {
-                    Transaktionsliste.Items.Add(transaktionen.ToString());
+                    Transaktionsliste.Items.Add(transaktionen);
                 }
             }
         }
 
+        // Zeigt alle Dauerauftrage zum Aktuellen Angemeldeten Benutzer an
         private void LadeDauerauftreage()
         {
             Dauerauftreage.Items.Clear();
@@ -248,7 +253,7 @@ namespace Kontoverwaltung
             {
                 if (auftreage.AuftraggeberIBAN.Equals(_Ausgeweahlt.IBAN) && auftreage.Dauerauftrag)
                 {
-                    Dauerauftreage.Items.Add(auftreage.ToString());
+                    Dauerauftreage.Items.Add(auftreage);
                 }
             }
         }

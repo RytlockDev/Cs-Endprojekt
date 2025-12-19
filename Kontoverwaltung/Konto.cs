@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Kontoverwaltung
@@ -32,14 +33,17 @@ namespace Kontoverwaltung
             this.Saldo += betrag;
         }
 
+        // Wurde als Virtual maiert da das Girokonto den dispo noch mit einberechnen muss
         public virtual void  Auszahlen(decimal betrag)
         {
             if(this.Saldo < betrag) throw new ArgumentException("Nicht genug Slado vorhanden");
             this.Saldo -= betrag;
         }
+
+        // Wurde auf Virtual gesetzt damit die Kindklassen ihr zusetzlichen daten noch mit aufnehmen koennen
         public virtual string ToCSV()
         {
-            return $"{Inhaber.LoginName};{IBAN};{Saldo}";
+            return $"{Inhaber.LoginName};{IBAN};{Saldo.ToString(CultureInfo.InvariantCulture)}";
         }
     }
 }

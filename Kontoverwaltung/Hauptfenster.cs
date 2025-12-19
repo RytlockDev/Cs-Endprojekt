@@ -12,11 +12,14 @@ namespace Kontoverwaltung
         private void Hauptfenster_Load(object sender, EventArgs e)
         {
             Location = new Point(Screen.PrimaryScreen.Bounds.Width / 4 -  this.Width / 2, Screen.PrimaryScreen.Bounds.Height / 4 -  this.Height / 2);
+            Datei_IO.ErzeugeKunden(Config.DATEIPFAD_KUNDEN);
+            Datei_IO.ErzeugeKonten(Config.DATEIPFAD_KONTEN);
+            Datei_IO.ErzeugeTransaktionen(Config.DATEIPFAD_TRANSAKTIONEN);
         }
 
         private void Hauptfenster_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            Datei_IO.SchreibeDaten(Config.DATEIPFAD_KUNDEN, Kundenverwaltung.kunden);
         }
 
         private void btnLogin_Click(object sender, EventArgs e) {

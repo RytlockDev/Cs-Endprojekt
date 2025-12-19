@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Kontoverwaltung
@@ -20,9 +21,7 @@ namespace Kontoverwaltung
             return "Sparkonto   " + base.ToString();
         }
 
-        public override string ToCSV()
-        {
-            return $"S;" + base.ToCSV() + $";{Zinssatz}";
-        }
+        // Cultureinfo wird Verwendet um die Komata fuer verschiedene Systeme enheitlich zu Speichern
+        public override string ToCSV() {return $"S;" + base.ToCSV() + $";{Zinssatz.ToString(CultureInfo.InvariantCulture)}";}
     }
 }

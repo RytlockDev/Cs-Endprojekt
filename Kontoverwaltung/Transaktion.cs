@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Kontoverwaltung
@@ -21,7 +22,8 @@ namespace Kontoverwaltung
         }
 
         public string ToCSV() {
-            return $"{Auftraggeber};{Empfaenger};{AuftraggeberIBAN};{AuftraggeberIBAN};{Verwendungszweck};{Betrag};{Ausfuehrungsdatum};{Dauerauftrag}";
+            // Cultureinfo wird Verwendet um die Komata fuer verschiedene Systeme enheitlich zu Speichern
+            return $"{Auftraggeber};{AuftraggeberIBAN};{Empfaenger};{AuftraggeberIBAN};{Verwendungszweck};{Betrag.ToString(CultureInfo.InvariantCulture)};{Ausfuehrungsdatum.ToString(CultureInfo.InvariantCulture)};{Dauerauftrag}";
         }
     }
 }
